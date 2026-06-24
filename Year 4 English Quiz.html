@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 4 English Language Interactive Assessment & Classroom Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for beautiful analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header / Navigation Bar -->
+    <header class="bg-blue-800 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-blue-800 p-2 rounded-lg font-bold text-xl shadow-inner">Y4</div>
+                <div>
+                    <h1 class="text-lg font-bold leading-tight">Year 4 English Language</h1>
+                    <p class="text-xs text-blue-200">CEFR-Aligned Classroom Portal</p>
+                </div>
+            </div>
+            
+            <!-- Connection & Identity Badge -->
+            <div class="flex items-center gap-3 flex-wrap">
+                <div id="cloud-status" class="bg-blue-900/60 px-3 py-1.5 rounded-full text-xs font-mono border border-blue-700/50 flex items-center gap-2">
+                    <span class="inline-block w-2.5 h-2.5 bg-yellow-500 rounded-full animate-pulse" id="status-indicator"></span>
+                    <span id="status-text">Connecting to Classroom Cloud...</span>
+                </div>
+                <div id="timer-display" class="bg-blue-900/60 px-4 py-1.5 rounded-full font-mono text-sm border border-blue-700/50 flex items-center gap-2">
+                    <i class="fa-regular fa-clock text-amber-400"></i>
+                    <span>00:00:00</span>
+                </div>
+                <div id="student-tag" class="hidden bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold shadow">
+                    <i class="fa-solid fa-user mr-1.5"></i> <span id="student-tag-name">Student</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-grow flex flex-col max-w-7xl w-full mx-auto p-4 gap-6">
+        
+        <!-- Welcome / Portal JSU Matrix Screen -->
+        <div id="welcome-screen" class="w-full max-w-4xl mx-auto flex flex-col gap-6 my-auto">
+            
+            <!-- Interactive Classroom Tabs -->
+            <div class="flex border-b border-slate-200 gap-2">
+                <button id="tab-btn-quiz" onclick="switchPortalTab('quiz')" class="px-5 py-2.5 bg-white border-t border-x border-slate-200 rounded-t-xl font-bold text-blue-800 text-sm shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square"></i> Take Year 4 Quiz
+                </button>
+                <button id="tab-btn-leaderboard" onclick="switchPortalTab('leaderboard')" class="px-5 py-2.5 hover:bg-slate-100 rounded-t-xl font-bold text-slate-600 text-sm flex items-center gap-2 transition-all">
+                    <i class="fa-solid fa-trophy text-amber-500"></i> Class Leaderboard
+                </button>
+                <button id="tab-btn-teacher" onclick="switchPortalTab('teacher')" class="px-5 py-2.5 hover:bg-slate-100 rounded-t-xl font-bold text-slate-600 text-sm flex items-center gap-2 transition-all">
+                    <i class="fa-solid fa-chalkboard-user text-indigo-500"></i> Teacher Desk
+                </button>
+            </div>
+
+            <!-- TAB 1: Take Quiz / Student Info Form -->
+            <div id="portal-quiz-view" class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 md:p-8 flex flex-col gap-6">
+                <div class="text-center">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">CEFR Standard Assessment</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-950 mt-2">Interactive Year 4 English Assessment</h2>
+                    <p class="text-slate-500 mt-1">Direct syllabus sync with Malaysian Primary School Curriculum Blueprint</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200/60 text-sm space-y-3">
+                        <h3 class="font-bold text-slate-700 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-table-list text-blue-700"></i> Curriculum Specifications (JSU):
+                        </h3>
+                        <ul class="space-y-1.5 text-slate-600">
+                            <li><strong class="text-slate-800">Part 1:</strong> Short Texts MCQs (Q1 – Q5)</li>
+                            <li><strong class="text-slate-800">Part 2:</strong> Grammar & Cloze MCQs (Q6 – Q15)</li>
+                            <li><strong class="text-slate-800">Part 3:</strong> Reading Comprehension (Q16 – Q25)</li>
+                            <li><strong class="text-slate-800">Part 4:</strong> Word Completion & Vocabulary (Q26 – Q35)</li>
+                            <li><strong class="text-slate-800">Part 5:</strong> Guided Writing & Sentence Construction (Q36 – Q50)</li>
+                        </ul>
+                        <div class="pt-2 border-t border-slate-200 flex justify-between text-xs text-slate-500">
+                            <span>Questions: <strong>50</strong></span>
+                            <span>Total Time: <strong>1h 30m</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- User registration Form -->
+                    <form id="start-exam-form" class="space-y-4 flex flex-col justify-center">
+                        <div>
+                            <label for="student-name" class="block text-sm font-semibold text-slate-700 mb-1">Student Full Name</label>
+                            <input type="text" id="student-name" required placeholder="e.g., Muhammad Adam bin Zakaria" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-slate-900 transition-all">
+                        </div>
+                        <div>
+                            <label for="student-class" class="block text-sm font-semibold text-slate-700 mb-1">Class / Form</label>
+                            <input type="text" id="student-class" required placeholder="e.g., Year 4 Bestari" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-slate-900 transition-all">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-lg">
+                            <span>Start Interactive Quiz</span>
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 2: Class Leaderboard -->
+            <div id="portal-leaderboard-view" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b pb-3">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Classroom Standings</h3>
+                        <p class="text-xs text-slate-500">Real-time standings of graded and completed English assessments.</p>
+                    </div>
+                    <i class="fa-solid fa-trophy text-amber-400 text-3xl"></i>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 uppercase text-xs font-bold border-b">
+                                <th class="p-3">Rank</th>
+                                <th class="p-3">Student Name</th>
+                                <th class="p-3">Class</th>
+                                <th class="p-3 text-center">Score</th>
+                                <th class="p-3 text-center">TP Level</th>
+                                <th class="p-3 text-center">Time Taken</th>
+                                <th class="p-3">Grading Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body" class="divide-y text-slate-700">
+                            <tr>
+                                <td colspan="7" class="p-4 text-center text-slate-400">No student submissions found on the classroom network yet. Be the first to finish!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 3: Teacher Grading Desk -->
+            <div id="portal-teacher-view" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b pb-3">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Teacher Evaluation Desk</h3>
+                        <p class="text-xs text-slate-500">Assess pending student writing submissions. Grade Part 5 responses to push live updates.</p>
+                    </div>
+                    <i class="fa-solid fa-chalkboard-user text-indigo-500 text-3xl"></i>
+                </div>
+                <div class="space-y-4" id="teacher-desk-list">
+                    <!-- Dynamic pending submissions list -->
+                    <div class="text-center py-8 text-slate-400">
+                        <i class="fa-solid fa-inbox text-4xl mb-2 text-slate-300 block"></i>
+                        No pending student submissions waiting for evaluations.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam UI Layout (Hidden initially) -->
+        <div id="exam-screen" class="hidden flex-grow flex flex-col lg:flex-row gap-6">
+            
+            <!-- Left Panel: Question Tracker Navigation -->
+            <aside class="lg:w-80 flex flex-col gap-4 order-2 lg:order-1">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 sticky top-24">
+                    <h3 class="font-bold text-slate-900 mb-2 flex items-center justify-between">
+                        <span>Progress Overview</span>
+                        <span id="answered-counter" class="text-sm bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full font-semibold">0 / 50</span>
+                    </h3>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 mb-4 overflow-hidden">
+                        <div id="progress-bar" class="bg-emerald-500 h-2.5 w-0 rounded-full transition-all duration-300"></div>
+                    </div>
+
+                    <!-- Category filter quick tabs -->
+                    <div class="grid grid-cols-5 gap-1 text-center text-xs font-semibold mb-4 bg-slate-50 p-1 rounded-lg border border-slate-200">
+                        <button onclick="changeSection(1)" id="part-tab-1" class="py-1 rounded text-blue-700 bg-white shadow-sm font-bold">P1</button>
+                        <button onclick="changeSection(2)" id="part-tab-2" class="py-1 rounded text-slate-600 hover:bg-white hover:text-slate-800">P2</button>
+                        <button onclick="changeSection(3)" id="part-tab-3" class="py-1 rounded text-slate-600 hover:bg-white hover:text-slate-800">P3</button>
+                        <button onclick="changeSection(4)" id="part-tab-4" class="py-1 rounded text-slate-600 hover:bg-white hover:text-slate-800">P4</button>
+                        <button onclick="changeSection(5)" id="part-tab-5" class="py-1 rounded text-slate-600 hover:bg-white hover:text-slate-800">P5</button>
+                    </div>
+
+                    <!-- 50 Question Grid Numbers -->
+                    <div class="grid grid-cols-5 gap-2 max-h-64 lg:max-h-[380px] overflow-y-auto custom-scrollbar p-1" id="question-navigator">
+                        <!-- Filled by JS -->
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2 justify-between">
+                        <div class="flex items-center gap-1.5 text-xs text-slate-500">
+                            <span class="inline-block w-3 h-3 rounded bg-emerald-500"></span> Checked
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs text-slate-500">
+                            <span class="inline-block w-3 h-3 rounded bg-blue-100 border border-blue-300"></span> Working
+                        </div>
+                    </div>
+
+                    <button onclick="finishExamPrompt()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-4 rounded-lg mt-4 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                        <span>Finish & Send Online</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Right Panel: Questions Content Box -->
+            <section class="flex-grow flex flex-col gap-6 order-1 lg:order-2">
+                <!-- Section Information Header -->
+                <div class="bg-blue-50 border-l-4 border-blue-800 p-4 rounded-r-xl">
+                    <h2 id="section-title" class="font-extrabold text-blue-900 text-lg">Part 1: Short Texts</h2>
+                    <p id="section-desc" class="text-blue-700 text-sm mt-0.5">Read the text in each question. Choose the best answer (A, B, or C).</p>
+                </div>
+
+                <!-- Questions Display Wrapper -->
+                <div id="questions-container" class="space-y-6">
+                    <!-- Questions injected dynamically by JavaScript -->
+                </div>
+
+                <!-- Pagination Buttons -->
+                <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200">
+                    <button id="prev-section-btn" onclick="navigateSection(-1)" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-arrow-left"></i> Previous Part
+                    </button>
+                    <button id="next-section-btn" onclick="navigateSection(1)" class="px-5 py-2.5 bg-blue-800 hover:bg-blue-900 text-white rounded-lg font-bold flex items-center gap-2 transition-all">
+                        Next Part <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Self-Grading Assistant Modal / Step (For Subjective Section Part 5) -->
+        <div id="grading-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl flex flex-col max-h-[85vh] border border-slate-200">
+                <div class="border-b border-slate-100 pb-4 mb-4">
+                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Teacher / Parent Grading Assistant</span>
+                    <h3 class="text-xl font-bold text-slate-900 mt-2">Checking Subjective Questions</h3>
+                    <p class="text-slate-500 text-sm">Please verify the open-ended answers against the guidelines provided in the curriculum scheme below.</p>
+                </div>
+
+                <!-- Dynamic Grading Body -->
+                <div id="grading-card-container" class="flex-grow overflow-y-auto custom-scrollbar space-y-6 pr-2">
+                    <!-- Injected dynamically -->
+                </div>
+
+                <div class="border-t border-slate-100 pt-4 mt-6 flex justify-between items-center">
+                    <span class="text-sm font-semibold text-slate-500">Grading Progress: <span id="grading-progress-text">1/11</span></span>
+                    <button id="grading-done-btn" onclick="submitGradesOnline()" disabled class="bg-blue-800 hover:bg-blue-900 text-white opacity-50 cursor-not-allowed font-bold px-6 py-3 rounded-lg flex items-center gap-2 transition-all">
+                        <span>Publish and Save Online</span>
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Warning/Confirmation Modal (Replaces default Window prompt) -->
+        <div id="custom-alert-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 flex flex-col gap-4 text-center">
+                <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xl mx-auto">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-lg text-slate-900" id="custom-alert-title">Assessment Warning</h3>
+                    <p class="text-sm text-slate-500 mt-1.5" id="custom-alert-message">Wait! You have some unanswered questions.</p>
+                </div>
+                <div class="flex gap-3 justify-center">
+                    <button onclick="dismissCustomAlert()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Go Back</button>
+                    <button id="custom-alert-confirm-btn" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm transition-all">Continue Anyway</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Analysis Dashboard -->
+        <div id="analysis-screen" class="hidden flex-col gap-6 w-full max-w-5xl mx-auto py-4">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 flex flex-col gap-8">
+                
+                <!-- Report Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-6">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Assessment Report Card</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-2">Personal Performance Analysis</h2>
+                        <p class="text-slate-500 text-sm mt-0.5">Report generated for <span id="report-student-name" class="font-semibold text-slate-800">Student</span> (<span id="report-student-class" class="text-slate-700">Class</span>)</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 border border-slate-300 transition-all text-sm shadow-sm">
+                            <i class="fa-solid fa-print"></i> Print Report
+                        </button>
+                        <button onclick="window.location.reload()" class="bg-blue-800 hover:bg-blue-900 text-white font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 transition-all text-sm shadow">
+                            <i class="fa-solid fa-rotate-left"></i> Main Portal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Metrics Breakdown -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Circular Score Widget -->
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Final Test Score</span>
+                        <div class="relative w-36 h-36 flex items-center justify-center mt-3">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="72" cy="72" r="64" stroke="#e2e8f0" stroke-width="12" fill="transparent" />
+                                <circle id="score-ring" cx="72" cy="72" r="64" stroke="#3b82f6" stroke-width="12" stroke-linecap="round" fill="transparent" stroke-dasharray="402" stroke-dashoffset="402" class="transition-all duration-1000 ease-out" />
+                            </svg>
+                            <div class="absolute flex flex-col items-center justify-center">
+                                <span id="report-final-score" class="text-3xl font-black text-slate-900">0/50</span>
+                                <span id="report-final-percent" class="text-sm font-semibold text-slate-500">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tahap Penguasaan (TP) Achievement Band -->
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col items-center justify-center text-center">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tahap Penguasaan (TP) Band</span>
+                        <div id="tp-badge" class="mt-4 px-6 py-4 rounded-2xl font-black text-4xl shadow-inner text-white bg-blue-600">
+                            TP 1
+                        </div>
+                        <h4 id="tp-title" class="font-bold text-slate-800 text-base mt-3">Sangat Memuaskan</h4>
+                        <p id="tp-desc" class="text-xs text-slate-500 px-4 mt-1 leading-relaxed">Student shows a stable grasp of core vocabulary and structural forms.</p>
+                    </div>
+
+                    <!-- Time & Speed Summary -->
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Time Elapsed</span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <i class="fa-regular fa-clock text-blue-700 text-lg"></i>
+                                    <span id="report-time-taken" class="text-xl font-bold text-slate-800">00:00</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Assessment Speed</span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <i class="fa-solid fa-gauge-high text-indigo-700 text-lg"></i>
+                                    <span id="report-time-average" class="text-xl font-bold text-slate-800">0 sec / Q</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200 mt-4 text-xs text-slate-500">
+                            Completed on: <span id="report-date" class="font-medium">N/A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Analysis Graph Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center border-t border-slate-100 pt-8">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">Syllabus Matrix Profile</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                            See your proficiency plotted across core curriculum subjects. Focus extra effort on subjects with a lower completion percentage.
+                        </p>
+                        <div class="space-y-3" id="topic-performance-bars">
+                            <!-- JS Injectable Progress Lists -->
+                        </div>
+                    </div>
+                    <div class="w-full max-h-64 flex justify-center">
+                        <canvas id="radarChart" class="w-full max-w-[280px]"></canvas>
+                    </div>
+                </div>
+
+                <!-- Detail Questions Review List -->
+                <div class="border-t border-slate-100 pt-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-list text-blue-800"></i>
+                            <span>Detailed Itemized Review</span>
+                        </h3>
+                        <div class="flex gap-2 text-xs">
+                            <button onclick="filterReview('all')" id="filter-all" class="px-3 py-1.5 rounded-full font-bold bg-blue-800 text-white shadow-sm">All (50)</button>
+                            <button onclick="filterReview('correct')" id="filter-correct" class="px-3 py-1.5 rounded-full font-bold text-slate-600 hover:bg-slate-100">Correct</button>
+                            <button onclick="filterReview('incorrect')" id="filter-incorrect" class="px-3 py-1.5 rounded-full font-bold text-slate-600 hover:bg-slate-100">Incorrect</button>
+                        </div>
+                    </div>
+
+                    <div id="detailed-review-list" class="space-y-4">
+                        <!-- Injected dynamic list of review cards -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Toast Banner container -->
+        <div id="toast-container" class="fixed bottom-4 right-4 flex flex-col gap-2 z-50"></div>
+    </main>
+
+    <!-- Simple Bottom Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-6 mt-auto border-t border-slate-700/60 text-xs text-center flex flex-col items-center gap-2">
+        <p>&copy; 2026 Malaysia Primary School Assessment Module. CEFR English Standard (Year 4 KSSR).</p>
+        <p class="font-mono text-slate-500 text-[10px]" id="user-uid-display">Checking Client Identity...</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global context variables
+        window.quizSessions = [];
+        window.currentUserId = "";
+        window.firebaseDB = null;
+
+        // Firebase credentials binding
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'y4-eng-quiz-online-db';
+        const rawConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+
+        if (rawConfig) {
+            try {
+                const config = JSON.parse(rawConfig);
+                const app = initializeApp(config);
+                const db = getFirestore(app);
+                const auth = getAuth(app);
+                
+                window.firebaseDB = db;
+
+                // Sign-in processing
+                const customToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                if (customToken) {
+                    signInWithCustomToken(auth, customToken).catch(() => signInAnonymously(auth));
+                } else {
+                    signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        window.currentUserId = user.uid;
+                        document.getElementById('user-uid-display').textContent = `Client Secure Identity: ${user.uid}`;
+                        
+                        // Update status displays
+                        const indicator = document.getElementById('status-indicator');
+                        indicator.className = "inline-block w-2.5 h-2.5 bg-emerald-500 rounded-full";
+                        document.getElementById('status-text').textContent = "Live Cloud Classroom Ready";
+                        
+                        // Start sync operations
+                        initializeRealtimeSubmissions(db, appId);
+                    }
+                });
+            } catch (err) {
+                console.error("Firebase startup issues:", err);
+                fallbackLocalEnvironment();
+            }
+        } else {
+            fallbackLocalEnvironment();
+        }
+
+        function fallbackLocalEnvironment() {
+            document.getElementById('status-indicator').className = "inline-block w-2.5 h-2.5 bg-amber-500 rounded-full";
+            document.getElementById('status-text').textContent = "Sandbox Offline Mode (No Sync)";
+            document.getElementById('user-uid-display').textContent = "Identity: Guest Sandbox (Offline)";
+        }
+
+        function initializeRealtimeSubmissions(db, appId) {
+            // Public path target following Rule 1
+            const collectionPath = `artifacts/${appId}/public/data/quiz_sessions`;
+            const sessionsQuery = collection(db, collectionPath);
+
+            onSnapshot(sessionsQuery, (snapshot) => {
+                const updatedSessions = [];
+                snapshot.forEach(doc => {
+                    updatedSessions.push({ id: doc.id, ...doc.data() });
+                });
+                
+                window.quizSessions = updatedSessions;
+                
+                // Redraw tabs based on state
+                renderCloudLeaderboard();
+                renderTeacherDesk();
+            }, (error) => {
+                console.error("Realtime update error:", error);
+                showToast("Failed to refresh classroom data stream.", "error");
+            });
+        }
+    </script>
+
+    <script>
+        // Quiz Data Matrix Mapping
+        const quizData = [
+            // PART 1 (Short Texts, Q1-Q5)
+            { id: 1, part: 1, type: "mcq", domain: "Reading Comprehension", context: "Notice:\nTo All Students:\nPlease return all library books by Friday, 20th June. A fine of RM0.50 per day will be charged for late returns.", question: "The notice tells students that they...", options: ["must buy new books by Friday.", "will have to pay if they return books late.", "can borrow books for free after Friday."], answer: 1, rationale: "The notice explicitly states that 'A fine of RM0.50 per day will be charged for late returns.' indicating payment for delayed book returns.", hint: "Find what happens to student library books returned after Friday." },
+            { id: 2, part: 1, type: "mcq", domain: "Reading Comprehension", context: "Sarah: Hi Johan! Are you free tomorrow afternoon? Let's go cycling at the park near my house.\nJohan: I'd love to, but I have my swimming lesson until 4:00 PM. How about we meet at 4:30 PM?", question: "Johan wants to...", options: ["go cycling before his swimming lesson.", "change the time of their activity.", "cancel the cycling plan with Sarah."], answer: 1, rationale: "Johan proposes to shift their cycling meeting to 4:30 PM instead of rejecting it, which alters the time schedule of their cycling event.", hint: "Pay close attention to Johan's proposed new time." },
+            { id: 3, part: 1, type: "mcq", domain: "Reading Comprehension", context: "Easy Pancakes Recipe:\n1. Mix flour, eggs, and milk in a bowl.\n2. Pour a scoop of batter into a hot pan.\n3. Flip when you see tiny bubbles on top.", question: "According to the recipe, you should flip the pancake when...", options: ["it is still liquid batter.", "you see bubbles on the surface.", "the pan gets too hot."], answer: 1, rationale: "Step 3 clearly dictates to 'Flip when you see tiny bubbles on top'.", hint: "Check Step 3 in the Pancake recipe steps." },
+            { id: 4, part: 1, type: "mcq", domain: "Reading Comprehension", context: "CAUTION: Wet Floor! Please do not run in the hallway.", question: "Where would you most likely see this sign?", options: ["In a swimming pool", "In a school corridor after cleaning", "In an outdoor playground"], answer: 1, rationale: "'Hallway' refers to corridors. Corridor floors are mopped and cleaned inside schools, requiring warning indicators to avoid slips.", hint: "Link the warning's location keyword 'hallway' with its corresponding choice." },
+            { id: 5, part: 1, type: "mcq", domain: "Reading Comprehension", context: "To: Mei Ling\nFrom: Uncle David\nHi Mei Ling, I bought you a traditional kite (wau) from Kelantan. I will bring it over during dinner this weekend!", question: "Uncle David is writing to Mei Ling to...", options: ["invite her out for dinner.", "tell her about a gift he got for her.", "ask her to travel to Kelantan."], answer: 1, rationale: "Uncle David informs her that he bought her a 'wau' (traditional Kelantan kite) and will give it to her when they meet.", hint: "What item did Uncle David buy specifically for Mei Ling?" },
+            
+            // PART 2 (Grammar & Cloze, Q6-15)
+            { id: 6, part: 2, type: "mcq", domain: "Grammar", context: "", question: "Every morning, Encik Kamal ________ his car to work.", options: ["drive", "drives", "driving"], answer: 1, rationale: "Encik Kamal is a singular subject. Present Simple singular verb requires the suffix '-s' ('drives').", hint: "Is 'Encik Kamal' singular or plural? Choose the matching Present Simple verb." },
+            { id: 7, part: 2, type: "mcq", domain: "Grammar", context: "", question: "Look at those clouds! It ________ rain very soon.", options: ["is going to", "will not", "went to"], answer: 0, rationale: "'is going to' is used for predictions about the future based on clear visual evidence (dark clouds).", hint: "We use 'going to' when we see clear evidence in front of us." },
+            { id: 8, part: 2, type: "mcq", domain: "Grammar", context: "", question: "The cat licked ________ fur clean after eating the fish.", options: ["its", "it's", "our"], answer: 0, rationale: "'Its' is the possessive determiner for singular animals or objects, whereas 'it's' is a contraction of 'it is'.", hint: "Which word represents possession belonging to the animal 'cat'?" },
+            { id: 9, part: 2, type: "mcq", domain: "Grammar", context: "", question: "There isn't ________ milk left in the refrigerator. We need to buy some.", options: ["many", "any", "some"], answer: 1, rationale: "'Any' is standard for negative sentences ('isn't any') with uncountable nouns like milk.", hint: "Negative sentences (isn't) typically require this word." },
+            { id: 10, part: 2, type: "mcq", domain: "Grammar", context: "", question: "Syamil is the ________ boy in his class; he always wins the running race.", options: ["fast", "faster", "fastest"], answer: 2, rationale: "The definite article 'the' followed by comparison in a group indicates a superlative degree form ('fastest').", hint: "Look at 'the' before the blank. Is he compared to everyone else?" },
+            
+            // Cloze (Q11-15)
+            { id: 11, part: 2, type: "mcq", domain: "Grammar", context: "Last weekend, Amin and his family (11) ________ to Port Dickson for a holiday...", question: "Choose the correct option for (11):", options: ["go", "went", "gone"], answer: 1, rationale: "'Last weekend' specifies completed actions in the past, hence using simple past 'went'.", hint: "Which tense matches 'Last weekend'?" },
+            { id: 12, part: 2, type: "mcq", domain: "Grammar", context: "...They stayed at a hotel (12) ________ was near the beach...", question: "Choose the correct option for (12):", options: ["who", "which", "where"], answer: 1, rationale: "The relative pronoun 'which' refers to a non-human noun ('hotel') acting as the subject of the clause.", hint: "The blank refers to 'a hotel' (thing/place subject)." },
+            { id: 13, part: 2, type: "mcq", domain: "Grammar", context: "...In the afternoon, Amin and his sister (13) ________ sandcastles while their parents read books...", question: "Choose the correct option for (13):", options: ["built", "build", "builds"], answer: 0, rationale: "Maintains past tense narrative alignment consistent with previous sentences in the passage ('built').", hint: "The paragraph continues in the Past Tense." },
+            { id: 14, part: 2, type: "mcq", domain: "Grammar", context: "...Suddenly, it started to rain, so they (14) ________ ran back inside the hotel...", question: "Choose the correct option for (14):", options: ["slowly", "quickly", "quietly"], answer: 1, rationale: "Adverb context: People usually run quickly to escape sudden rainfall.", hint: "How do you run when it starts to rain suddenly?" },
+            { id: 15, part: 2, type: "mcq", domain: "Grammar", context: "...It was a short (15) ________ exciting trip.", question: "Choose the correct option for (15):", options: ["but", "or", "because"], answer: 0, rationale: "Conjunction 'but' links two contrasting adjectives ('short' but 'exciting').", hint: "Choose the word used to connect opposite qualities." },
+
+            // PART 3 (Reading Comprehension, Q16-25)
+            { id: 16, part: 3, type: "mcq", domain: "Reading Comprehension", context: "The Honest Woodcutter story text...", question: "What was Ahmad's job?", options: ["A fisherman", "A market seller", "A woodcutter"], answer: 2, rationale: "The story states: '...a poor woodcutter named Ahmad lived near a thick forest.'", hint: "Read the opening paragraph of the story." },
+            { id: 17, part: 3, type: "mcq", domain: "Reading Comprehension", context: "The Honest Woodcutter story text...", question: "Why did Ahmad cry when his axe fell into the river?", options: ["He was afraid of the river fairy.", "He did not know how to swim and needed the axe to work.", "The river water was freezing cold."], answer: 1, rationale: "The text says 'Ahmad cried out in sorrow because he could not swim, and the axe was his only way to earn a living.'", hint: "Find the sentence explaining Ahmad's 'sorrow' after the axe drops." },
+            { id: 18, part: 3, type: "mcq", domain: "Reading Comprehension", context: "The Honest Woodcutter story text...", question: "What was the first axe the fairy showed to Ahmad?", options: ["A silver axe", "An iron axe", "A golden axe"], answer: 2, rationale: "The text mentions: '...she dived into the deep river and brought up a gleaming golden axe.'", hint: "What kind of axe was brought up first by the fairy?" },
+            { id: 19, part: 3, type: "mcq", domain: "Reading Comprehension", context: "The Honest Woodcutter story text...", question: "How did Ahmad react when he saw his old iron axe?", options: ["He shook his head.", "He smiled happily and claimed it.", "He asked for a different one."], answer: 1, rationale: "The text records: 'Ahmad smiled happily and exclaimed, \"Yes! That one is mine!\"'", hint: "Look at his response when his original iron axe is retrieved." },
+            { id: 20, part: 3, type: "mcq", domain: "Reading Comprehension", context: "The Honest Woodcutter story text...", question: "Why did the fairy reward Ahmad with all three axes?", options: ["Because he was very poor.", "Because he told the truth.", "Because he helped her clean the river."], answer: 1, rationale: "The passage notes: 'The fairy was so pleased with Ahmad’s honesty that she gave him all three axes as a reward.'", hint: "The fairy rewarded him for a key positive personality trait." },
+            { id: 21, part: 3, type: "tf", domain: "Reading Comprehension", context: "", question: "Ahmad lived near a big city.", options: ["True", "False"], answer: 1, rationale: "According to paragraph 1, Ahmad lived near 'a thick forest', not a big city.", hint: "Check the first sentence to see where Ahmad lived." },
+            { id: 22, part: 3, type: "tf", domain: "Reading Comprehension", context: "", question: "Ahmad could swim very well.", options: ["True", "False"], answer: 1, rationale: "The text specifically notes that 'he could not swim'.", hint: "Did Ahmad possess the skill to swim?" },
+            { id: 23, part: 3, type: "text", domain: "Reading Comprehension", context: "", question: "The fairy dived into the water a total of ______ times.", exactAnswers: ["3", "three"], placeholder: "Type a number or word", rationale: "The fairy dived once for the golden axe, once for the silver axe, and a third time for the iron axe.", hint: "Count the total attempts the fairy made diving for the axes." },
+            { id: 24, part: 3, type: "text", domain: "Reading Comprehension", context: "", question: "Find a word in the text that means 'shiny/bright':", exactAnswers: ["gleaming"], placeholder: "Type the word from the text", rationale: "The golden axe is described in the text as a 'gleaming golden axe', which means shiny and bright.", hint: "Look at the description of the golden axe in paragraph 3." },
+            { id: 25, part: 3, type: "manual", domain: "Reading Comprehension", context: "", question: "What lesson can we learn from Ahmad's story?", modelAnswer: "Honesty is the best policy. We must always tell the truth.", placeholder: "Write your moral lesson in a full sentence.", rationale: "Ahmad was rewarded because he was honest and refused to claim axes that did not belong to him.", hint: "Think about the main virtue Ahmad displayed." },
+
+            // PART 4 (Word Completion & Vocabulary, Q26-35)
+            { id: 26, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "", question: "A place where you go to study and learn from teachers: S C H _ _ _", exactAnswers: ["school"], placeholder: "Complete the word", rationale: "S-C-H-O-O-L is the spelling of a place where students study.", hint: "Add two of the letter 'o' to finish it." },
+            { id: 27, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "", question: "The day of the week that comes right after Friday: S _ T _ R D _ Y", exactAnswers: ["saturday"], placeholder: "Complete the word", rationale: "S-A-T-U-R-D-A-Y is the spelling for the day after Friday.", hint: "The missing letters are 'a', 'u', 'a'." },
+            { id: 28, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "", question: "An animal with a long trunk and big ears: E L _ P H _ N T", exactAnswers: ["elephant"], placeholder: "Complete the word", rationale: "E-L-E-P-H-A-N-T is the spelling of the large mammal with a trunk.", hint: "The missing letters are 'e' and 'a'." },
+            { id: 29, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "", question: "The opposite of the word 'heavy': L _ G H _", exactAnswers: ["light"], placeholder: "Complete the word", rationale: "L-I-G-H-T means of little weight, which is the antonym of heavy.", hint: "The missing letters are 'i' and 't'." },
+            { id: 30, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "", question: "A kitchen tool used for cutting vegetables and meat: K N _ _ E", exactAnswers: ["knife"], placeholder: "Complete the word", rationale: "K-N-I-F-E is a sharp tool used in cooking preparation.", hint: "The missing letters are 'i' and 'f'." },
+            { id: 31, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "Word Bank: [ recycling / proud / ingredients / delicious / doctor ]", question: "My mother bought all the necessary ________ to bake a chocolate cake.", exactAnswers: ["ingredients"], placeholder: "Type a word from the box", rationale: "Ingredients refers to materials combined to make a recipe.", hint: "This refers to the food items needed for baking a cake." },
+            { id: 32, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "Word Bank: [ recycling / proud / ingredients / delicious / doctor ]", question: "Throwing plastic bottles into the green bin is a good habit of ________.", exactAnswers: ["recycling"], placeholder: "Type a word from the box", rationale: "Using separate bins to classify waste correctly falls under recycling practices.", hint: "This process involves processing waste to turn them into new products." },
+            { id: 33, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "Word Bank: [ recycling / proud / ingredients / delicious / doctor ]", question: "Encik Halim felt very ________ when his daughter won the storytelling competition.", exactAnswers: ["proud"], placeholder: "Type a word from the box", rationale: "Parents feel proud (pleased with accomplishments) when children win competitions.", hint: "This is a positive feeling of achievement." },
+            { id: 34, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "Word Bank: [ recycling / proud / ingredients / delicious / doctor ]", question: "If you feel sick, you should visit a ________ to get medicine.", exactAnswers: ["doctor"], placeholder: "Type a word from the box", rationale: "A doctor is a qualified medical practitioner who prescribes treatments and medicine.", hint: "This is a medical professional." },
+            { id: 35, part: 4, type: "text", domain: "Vocabulary & Spelling", context: "Word Bank: [ recycling / proud / ingredients / delicious / doctor ]", question: "This noodle soup is absolutely ________! Can I have another bowl?", exactAnswers: ["delicious"], placeholder: "Type a word from the box", rationale: "Noodle soup that makes someone want another serving has a delicious (very pleasing) taste.", hint: "This means the food tastes very good." },
+
+            // PART 5 (Guided Writing & Sentence Construction, Q36-50)
+            { id: 36, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Words: [ favorite / My / subject / English / is / . ]", question: "Rearrange the words to form a correct sentence:", exactAnswers: ["my favorite subject is english."], placeholder: "Write the full sentence", rationale: "Standard order: Subject + Verb + Complement ('My favorite subject is English.')", hint: "Start with the capital letter 'My' and end with a full stop." },
+            { id: 37, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Words: [ to / We / yesterday / the / zoo / went / . ]", question: "Rearrange the words to form a correct sentence:", exactAnswers: ["we went to the zoo yesterday.", "yesterday, we went to the zoo.", "yesterday we went to the zoo."], placeholder: "Write the full sentence", rationale: "Subject ('We') + Past Action Verb ('went') + Destination ('to the zoo') + Time Adverbial ('yesterday').", hint: "Start with 'We' and remember the full stop." },
+            { id: 38, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Words: [ is / beautiful / cooking / She / kitchen / the / in / . ]", question: "Rearrange the words to form a correct sentence:", exactAnswers: ["she is cooking in the beautiful kitchen."], placeholder: "Write the full sentence", rationale: "Subject ('She') + Auxiliary ('is') + Present Participle ('cooking') + Location PP ('in the beautiful kitchen').", hint: "Start with 'She' and place the adjective 'beautiful' before 'kitchen'." },
+            { id: 39, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Words: [ soccer / They / playing / like / evening / the / in / . ]", question: "Rearrange the words to form a correct sentence:", exactAnswers: ["they like playing soccer in the evening."], placeholder: "Write the full sentence", rationale: "Subject ('They') + Verb ('like') + Gerund direct object ('playing soccer') + Time phrase ('in the evening').", hint: "Start with 'They' and end with the evening time frame." },
+            { id: 40, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Words: [ book / Where / leave / did / my / you / ? ]", question: "Rearrange the words to form a correct sentence:", exactAnswers: ["where did you leave my book?"], placeholder: "Write the full sentence", rationale: "Question order: WH-word ('Where') + Auxiliary ('did') + Subject ('you') + Verb ('leave') + Object ('my book?').", hint: "This is a question. Start with 'Where' and end with a question mark." },
+            
+            // Description manual checks (Q41-45)
+            { id: 41, part: 5, type: "manual", domain: "Sentence Construction & Writing", context: "Write a sentence using the verb cue.", question: "Describe what the person is doing. (Verb cue: **washing**)", modelAnswer: "He is washing his bicycle. / The boy is washing his hands.", placeholder: "Write your sentence here...", rationale: "The sentence must include 'washing' along with a logical subject and object.", hint: "Create a subject (e.g., 'Ahmad' or 'The boy') and use the continuous verb form 'is washing' followed by an object." },
+            { id: 42, part: 5, type: "manual", domain: "Sentence Construction & Writing", context: "Write a sentence using the verb cue.", question: "Describe what the person is doing. (Verb cue: **reading**)", modelAnswer: "She is reading a storybook. / Mei Mei loves reading books in the library.", placeholder: "Write your sentence here...", rationale: "The sentence must include the verb 'reading' correctly and be grammatically sound.", hint: "Describe someone reading a book, a newspaper, or a magazine." },
+            { id: 43, part: 5, type: "manual", domain: "Sentence Construction & Writing", context: "Write a sentence using the verb cue.", question: "Describe what the person is doing. (Verb cue: **eating**)", modelAnswer: "The boy is eating a delicious red apple. / They are eating rice.", placeholder: "Write your sentence here...", rationale: "A descriptive sentence containing 'eating' or 'is eating' alongside what is being eaten.", hint: "Who is eating and what are they eating?" },
+            { id: 44, part: 5, type: "manual", domain: "Sentence Construction & Writing", context: "Write a sentence using the verb cue.", question: "Describe what the person is doing. (Verb cue: **watering**)", modelAnswer: "The gardener is watering the plants. / My father is watering the flowers in the garden.", placeholder: "Write your sentence here...", rationale: "Must use 'watering' correctly in context of garden care.", hint: "Think of flowers, plants, or a garden being watered." },
+            { id: 45, part: 5, type: "manual", domain: "Sentence Construction & Writing", context: "Write a sentence using the verb cue.", question: "Describe what the person is doing. (Verb cue: **sleeping**)", modelAnswer: "The baby is sleeping peacefully on the bed. / The cat is sleeping on the sofa.", placeholder: "Write your sentence here...", rationale: "Needs to use 'sleeping' along with a logical subject and prepositional phrase location.", hint: "Describe a baby, a cat, or a person sleeping somewhere." },
+
+            // Short Message Fill (Q46-50)
+            { id: 46, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Email context: 'I started (46) ______ stamps last month...'", question: "Fill in blank (46):", exactAnswers: ["collecting"], placeholder: "Type a word", rationale: "'collecting stamps' is a highly recognized collocation for the hobby of stamp assembly.", hint: "The hobby is called stamp ______." },
+            { id: 47, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Email context: '...My grandfather gave me an old (47) ______ full of beautiful stamps...'", question: "Fill in blank (47):", exactAnswers: ["album", "book"], placeholder: "Type a word", rationale: "Stamps are conventionally organized and kept safe inside a stamp album or book.", hint: "What kind of book is used to collect and display stamps?" },
+            { id: 48, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Email context: '...My favorite stamp is a large red one from (48) ______...'", question: "Fill in blank (48):", exactAnswers: ["china"], placeholder: "Type a country", rationale: "Panda stamps are world famous and come from China where pandas originate.", hint: "Which country is famous for giant pandas?" },
+            { id: 49, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Email context: '...Do you have a (49) ______ too?...'", question: "Fill in blank (49):", exactAnswers: ["hobby"], placeholder: "Type a word", rationale: "The email discusses stamp collecting as a hobby, asking the recipient if they have one as well.", hint: "This refers to an activity done for pleasure in one's free time." },
+            { id: 50, part: 5, type: "text", domain: "Sentence Construction & Writing", context: "Email context: '...Your friend, (50) ______...'", question: "Fill in blank (50):", exactAnswers: ["any"], placeholder: "Type any name to sign off", rationale: "Accepts any logical name representing the sender of this email.", hint: "Just type any name (e.g., 'John' or 'Siti') to sign off the message." }
+        ];
+
+        // App States
+        let studentName = "";
+        let studentClass = "";
+        let startTime = null;
+        let timerInterval = null;
+        let currentSection = 1; 
+        let studentAnswers = {}; 
+        let manualGradingQuestions = []; 
+        let currentGradingIndex = 0;
+        let manualGrades = {}; 
+
+        // Live Cloud Temporary Reference (Session during active grading)
+        let activeGradingSessionId = null;
+
+        const sections = {
+            1: { title: "Part 1: Short Texts", desc: "Read the text in each question. Choose the best answer (A, B, or C). [Questions 1 - 5]" },
+            2: { title: "Part 2: Grammar & Cloze Text", desc: "Choose the best answers to complete sentences and fill the passage blanks. [Questions 6 - 15]" },
+            3: { title: "Part 3: Reading Comprehension", desc: "Read 'The Honest Woodcutter' story. Answer questions 16 to 25 based on the passage.", passage: `<strong>The Honest Woodcutter</strong><br><br>Once upon a time, a poor woodcutter named Ahmad lived near a thick forest. Every day, he went into the forest to chop firewood to sell at the local market.<br><br>One afternoon, while he was chopping a tree near a deep river, his iron axe slipped from his hand and fell into the water. Ahmad cried out in sorrow because he could not swim, and the axe was his only way to earn a living.<br><br>Suddenly, a river fairy appeared from the water. Hearing his problem, she dived into the deep river and brought up a gleaming golden axe. "Is this yours?" she asked. Ahmad shook his head and said, "No, that is not mine."<br><br>The fairy dived again and returned with a silver axe. Again, Ahmad said, "No, my axe is made of plain iron." Finally, the fairy dived down a third time and brought up his old iron axe. Ahmad smiled happily and exclaimed, "Yes! That one is mine!"<br><br>The fairy was so pleased with Ahmad’s honesty that she gave him all three axes as a reward. Ahmad returned home a wealthy man and never forgot the value of telling the truth.` },
+            4: { title: "Part 4: Word Completion & Vocabulary", desc: "Spell and identify vocabulary words correctly based on instructions. [Questions 26 - 35]" },
+            5: { title: "Part 5: Guided Writing & Sentence Construction", desc: "Rearrange word sets, describe activities, and complete the mail. [Questions 36 - 50]" }
+        };
+
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const examScreen = document.getElementById('exam-screen');
+        const analysisScreen = document.getElementById('analysis-screen');
+        const gradingModal = document.getElementById('grading-modal');
+        
+        function switchPortalTab(tabName) {
+            const tabs = ['quiz', 'leaderboard', 'teacher'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                const view = document.getElementById(`portal-${t}-view`);
+                
+                if (t === tabName) {
+                    btn.className = "px-5 py-2.5 bg-white border-t border-x border-slate-200 rounded-t-xl font-bold text-blue-800 text-sm shadow-sm flex items-center gap-2";
+                    view.classList.remove('hidden');
+                } else {
+                    btn.className = "px-5 py-2.5 hover:bg-slate-100 rounded-t-xl font-bold text-slate-600 text-sm flex items-center gap-2 transition-all";
+                    view.classList.add('hidden');
+                }
+            });
+        }
+
+        // Custom Notification Handler
+        function showToast(message, type = "info") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = "bg-slate-950 text-white border-slate-800";
+            let icon = '<i class="fa-solid fa-circle-info text-blue-400"></i>';
+            
+            if (type === "success") {
+                bgClass = "bg-emerald-950 text-emerald-100 border-emerald-800";
+                icon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+            } else if (type === "error") {
+                bgClass = "bg-rose-950 text-rose-100 border-rose-800";
+                icon = '<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>';
+            } else if (type === "warning") {
+                bgClass = "bg-amber-950 text-amber-100 border-amber-800";
+                icon = '<i class="fa-solid fa-circle-exclamation text-amber-400"></i>';
+            }
+
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg text-xs font-semibold ${bgClass} transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Custom modal confirmations
+        let onCustomAlertConfirm = null;
+        function showCustomAlert(title, message, confirmBtnText, onConfirm) {
+            document.getElementById('custom-alert-title').textContent = title;
+            document.getElementById('custom-alert-message').textContent = message;
+            
+            const confirmBtn = document.getElementById('custom-alert-confirm-btn');
+            confirmBtn.textContent = confirmBtnText;
+            
+            onCustomAlertConfirm = onConfirm;
+            document.getElementById('custom-alert-modal').classList.remove('hidden');
+        }
+
+        function dismissCustomAlert() {
+            document.getElementById('custom-alert-modal').classList.add('hidden');
+            onCustomAlertConfirm = null;
+        }
+
+        document.getElementById('custom-alert-confirm-btn').addEventListener('click', () => {
+            if (onCustomAlertConfirm) {
+                onCustomAlertConfirm();
+            }
+            dismissCustomAlert();
+        });
+
+        document.getElementById('start-exam-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            studentName = document.getElementById('student-name').value;
+            studentClass = document.getElementById('student-class').value;
+            
+            document.getElementById('student-tag-name').textContent = studentName;
+            document.getElementById('student-tag').classList.remove('hidden');
+            
+            welcomeScreen.classList.add('hidden');
+            examScreen.classList.remove('hidden');
+            
+            startTime = new Date();
+            startTimer();
+            initializeNavigator();
+            changeSection(1);
+            showToast(`Good luck, ${studentName}! Your exam timer has started.`, "success");
+        });
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const now = new Date();
+                const diff = now - startTime;
+                const hrs = String(Math.floor(diff / 3600000)).padStart(2, '0');
+                const mins = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                const secs = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                document.getElementById('timer-display').querySelector('span').textContent = `${hrs}:${mins}:${secs}`;
+            }, 1000);
+        }
+
+        // Question navigation grid generator
+        function initializeNavigator() {
+            const container = document.getElementById('question-navigator');
+            container.innerHTML = '';
+            quizData.forEach((q) => {
+                const btn = document.createElement('button');
+                btn.id = `nav-btn-${q.id}`;
+                btn.textContent = q.id;
+                btn.className = "py-2 text-sm rounded-lg font-bold border border-slate-200 transition-all text-slate-700 bg-white hover:bg-slate-100 flex items-center justify-center";
+                btn.onclick = () => jumpToQuestion(q.id);
+                container.appendChild(btn);
+            });
+        }
+
+        function jumpToQuestion(qId) {
+            const q = quizData.find(item => item.id === qId);
+            if (q) {
+                changeSection(q.part);
+                setTimeout(() => {
+                    const el = document.getElementById(`q-card-${qId}`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+        }
+
+        function changeSection(partNum) {
+            currentSection = partNum;
+            
+            for(let i=1; i<=5; i++) {
+                const tab = document.getElementById(`part-tab-${i}`);
+                if (i === partNum) {
+                    tab.className = "py-1 rounded text-blue-700 bg-white shadow-sm font-bold";
+                } else {
+                    tab.className = "py-1 rounded text-slate-600 hover:bg-white hover:text-slate-800";
+                }
+            }
+
+            document.getElementById('section-title').textContent = sections[partNum].title;
+            document.getElementById('section-desc').textContent = sections[partNum].desc;
+
+            const qContainer = document.getElementById('questions-container');
+            qContainer.innerHTML = '';
+
+            if (sections[partNum].passage) {
+                const passageBox = document.createElement('div');
+                passageBox.className = "bg-amber-50/50 border border-amber-200/80 rounded-xl p-5 shadow-sm text-sm text-slate-700 leading-relaxed mb-6 max-h-72 overflow-y-auto custom-scrollbar";
+                passageBox.innerHTML = `
+                    <div class="flex items-center gap-2 mb-3 text-amber-800 font-bold">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Reading Passage</span>
+                    </div>
+                    ${sections[partNum].passage}
+                `;
+                qContainer.appendChild(passageBox);
+            }
+
+            const partQuestions = quizData.filter(q => q.part === partNum);
+            
+            partQuestions.forEach(q => {
+                const card = document.createElement('div');
+                card.id = `q-card-${q.id}`;
+                card.className = "bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4 transition-all duration-300";
+
+                let qHeader = `<div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <span class="font-extrabold text-blue-800">Question ${q.id}</span>
+                    <span class="text-xs bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium uppercase tracking-wider">${q.domain}</span>
+                </div>`;
+                card.innerHTML += qHeader;
+
+                if (q.context) {
+                    const ctx = document.createElement('div');
+                    ctx.className = "bg-slate-50 border-l-4 border-slate-300 p-3 text-sm text-slate-600 italic whitespace-pre-wrap font-sans";
+                    ctx.textContent = q.context;
+                    card.appendChild(ctx);
+                }
+
+                const qText = document.createElement('p');
+                qText.className = "font-bold text-slate-900 text-base leading-snug";
+                qText.textContent = q.question;
+                card.appendChild(qText);
+
+                const controlsWrapper = document.createElement('div');
+                controlsWrapper.className = "space-y-2 mt-3";
+
+                if (q.type === 'mcq') {
+                    q.options.forEach((opt, idx) => {
+                        const isSelected = studentAnswers[q.id] === idx;
+                        const optBtn = document.createElement('button');
+                        optBtn.className = `w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between text-sm ${
+                            isSelected ? 'bg-blue-50 border-blue-600 font-bold text-blue-900 shadow-sm' : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+                        }`;
+                        optBtn.onclick = () => selectOption(q.id, idx);
+                        optBtn.innerHTML = `
+                            <span><strong>${String.fromCharCode(65 + idx)})</strong> ${opt}</span>
+                            ${isSelected ? '<i class="fa-solid fa-circle-check text-blue-600"></i>' : ''}
+                        `;
+                        controlsWrapper.appendChild(optBtn);
+                    });
+                } else if (q.type === 'tf') {
+                    q.options.forEach((opt, idx) => {
+                        const isSelected = studentAnswers[q.id] === idx;
+                        const optBtn = document.createElement('button');
+                        optBtn.className = `w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between text-sm ${
+                            isSelected ? 'bg-blue-50 border-blue-600 font-bold text-blue-900 shadow-sm' : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+                        }`;
+                        optBtn.onclick = () => selectOption(q.id, idx);
+                        optBtn.innerHTML = `
+                            <span><strong>${opt}</strong></span>
+                            ${isSelected ? '<i class="fa-solid fa-circle-check text-blue-600"></i>' : ''}
+                        `;
+                        controlsWrapper.appendChild(optBtn);
+                    });
+                } else if (q.type === 'text' || q.type === 'manual') {
+                    const textVal = studentAnswers[q.id] || "";
+                    const input = document.createElement('textarea');
+                    input.rows = q.type === 'manual' ? 2 : 1;
+                    input.className = "w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 resize-none transition-all";
+                    input.placeholder = q.placeholder || "Type your answer here...";
+                    input.value = textVal;
+                    input.oninput = (e) => saveTextInput(q.id, e.target.value);
+                    controlsWrapper.appendChild(input);
+                }
+
+                card.appendChild(controlsWrapper);
+
+                if (q.hint) {
+                    const hintAccordion = document.createElement('div');
+                    hintAccordion.className = "mt-4 pt-3 border-t border-slate-100 flex flex-col";
+                    hintAccordion.innerHTML = `
+                        <button onclick="toggleHint(${q.id})" class="text-xs text-amber-700 hover:text-amber-800 font-bold flex items-center gap-1 w-max">
+                            <i class="fa-solid fa-lightbulb"></i> View Nudge Hint
+                        </button>
+                        <p id="hint-${q.id}" class="hidden mt-1.5 text-xs text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200/50 leading-relaxed">${q.hint}</p>
+                    `;
+                    card.appendChild(hintAccordion);
+                }
+
+                qContainer.appendChild(card);
+            });
+
+            document.getElementById('prev-section-btn').disabled = partNum === 1;
+            document.getElementById('prev-section-btn').style.opacity = partNum === 1 ? '0.5' : '1';
+            document.getElementById('next-section-btn').textContent = partNum === 5 ? "Review Summary" : "Next Part";
+        }
+
+        function toggleHint(qId) {
+            const hintBox = document.getElementById(`hint-${qId}`);
+            hintBox.classList.toggle('hidden');
+        }
+
+        function selectOption(qId, valIdx) {
+            studentAnswers[qId] = valIdx;
+            updateProgressStats();
+            changeSection(currentSection);
+        }
+
+        function saveTextInput(qId, valText) {
+            if (valText.trim() === "") {
+                delete studentAnswers[qId];
+            } else {
+                studentAnswers[qId] = valText;
+            }
+            updateProgressStats();
+        }
+
+        function updateProgressStats() {
+            const answeredCount = Object.keys(studentAnswers).length;
+            document.getElementById('answered-counter').textContent = `${answeredCount} / 50`;
+            
+            const pct = Math.round((answeredCount / 50) * 100);
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            quizData.forEach(q => {
+                const navBtn = document.getElementById(`nav-btn-${q.id}`);
+                if (navBtn) {
+                    if (studentAnswers[q.id] !== undefined) {
+                        navBtn.className = "py-2 text-sm rounded-lg font-bold border border-emerald-500 text-white bg-emerald-500 transition-all flex items-center justify-center";
+                    } else {
+                        navBtn.className = "py-2 text-sm rounded-lg font-bold border border-blue-200 text-slate-700 bg-blue-50 transition-all flex items-center justify-center";
+                    }
+                }
+            });
+        }
+
+        function navigateSection(direction) {
+            const nextPart = currentSection + direction;
+            if (nextPart >= 1 && nextPart <= 5) {
+                changeSection(nextPart);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (nextPart > 5) {
+                finishExamPrompt();
+            }
+        }
+
+        function finishExamPrompt() {
+            const totalQuestions = quizData.length;
+            const answeredCount = Object.keys(studentAnswers).length;
+            const missingCount = totalQuestions - answeredCount;
+
+            let confirmationMsg = "Are you ready to submit your exam to the classroom cloud?";
+            if (missingCount > 0) {
+                confirmationMsg = `Warning: You still have ${missingCount} unanswered questions! Do you want to submit anyway?`;
+            }
+
+            showCustomAlert("Submit Exam", confirmationMsg, "Submit Now", () => {
+                clearInterval(timerInterval);
+                pushQuizAnswersToCloud();
+            });
+        }
+
+        async function pushQuizAnswersToCloud() {
+            const timeDiff = new Date() - startTime;
+            
+            // Build temporary payload following Rule 1 & Rule 3 requirements
+            const sessionPayload = {
+                studentName: studentName,
+                studentClass: studentClass,
+                studentAnswers: studentAnswers,
+                timeTakenMs: timeDiff,
+                timestamp: Date.now(),
+                userId: window.currentUserId || 'offline-guest',
+                status: 'pending_grading',
+                score: 0,
+                finalScore: 0,
+                tpLevel: 'Pending Evaluation'
+            };
+
+            if (window.firebaseDB) {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'y4-eng-quiz-online-db';
+                const colPath = `artifacts/${appId}/public/data/quiz_sessions`;
+                
+                try {
+                    // Create secure unique key
+                    const sessionDocId = window.currentUserId ? `${window.currentUserId}_${Date.now()}` : `guest_${Date.now()}`;
+                    const targetDoc = doc(window.firebaseDB, colPath, sessionDocId);
+                    
+                    await setDoc(targetDoc, sessionPayload);
+                    showToast("Your paper was uploaded to the Classroom Cloud! Opening Grading Assistant...", "success");
+                    
+                    // Trigger Parent/Self-Grading process Locally
+                    activeGradingSessionId = sessionDocId;
+                    initiateGradingWorkflow();
+                } catch (e) {
+                    console.error("Cloud upload error:", e);
+                    showToast("Cloud connection error. Starting local fallback grading.", "warning");
+                    initiateGradingWorkflow();
+                }
+            } else {
+                showToast("Sandbox offline mode. Starting standard local grading.", "info");
+                initiateGradingWorkflow();
+            }
+        }
+
+        // Subjective Evaluation Flow initiation
+        function initiateGradingWorkflow() {
+            manualGradingQuestions = quizData.filter(q => q.type === 'manual');
+            
+            if (manualGradingQuestions.length > 0) {
+                currentGradingIndex = 0;
+                manualGrades = {};
+                gradingModal.classList.remove('hidden');
+                renderGradingItem();
+            } else {
+                calculateFinalAnalysis();
+            }
+        }
+
+        function renderGradingItem() {
+            const container = document.getElementById('grading-card-container');
+            container.innerHTML = '';
+
+            document.getElementById('grading-progress-text').textContent = `${currentGradingIndex + 1}/${manualGradingQuestions.length}`;
+
+            const q = manualGradingQuestions[currentGradingIndex];
+            const answerProvided = studentAnswers[q.id] || "No Answer Submitted";
+
+            const gradingCard = document.createElement('div');
+            gradingCard.className = "bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 shadow-sm";
+            gradingCard.innerHTML = `
+                <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                    <span class="font-extrabold text-blue-950">Subjective Q${q.id} Grading</span>
+                    <span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">${q.domain}</span>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-slate-400 text-xs uppercase tracking-wider">Question Context/Text</h4>
+                    <p class="font-bold text-slate-800 text-sm mt-1">${q.question}</p>
+                </div>
+                <div class="bg-blue-50/50 p-3 rounded-lg border border-blue-100">
+                    <h4 class="font-bold text-blue-900 text-xs uppercase tracking-wider">The Student's Input</h4>
+                    <p class="text-slate-800 font-medium text-sm mt-1.5 whitespace-pre-wrap bg-white p-3 rounded-md border border-slate-200">${answerProvided}</p>
+                </div>
+                <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100">
+                    <h4 class="font-bold text-emerald-900 text-xs uppercase tracking-wider">Recommended Model Answer Guide</h4>
+                    <p class="text-slate-700 text-xs mt-1.5 leading-relaxed bg-white p-3 rounded-md border border-slate-200">${q.modelAnswer}</p>
+                </div>
+                
+                <div class="flex flex-col gap-2 pt-2">
+                    <h4 class="font-bold text-slate-700 text-xs">Does the student's answer align logically with the scoring criteria?</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="btn-correct" onclick="setManualGrade(${q.id}, true)" class="py-3 px-4 rounded-xl border border-slate-200 flex items-center justify-center gap-2 font-bold text-sm bg-white hover:bg-slate-50 text-slate-700 transition-all">
+                            <i class="fa-regular fa-circle-check text-emerald-500 text-lg"></i>
+                            <span>Correct (1 Mark)</span>
+                        </button>
+                        <button id="btn-incorrect" onclick="setManualGrade(${q.id}, false)" class="py-3 px-4 rounded-xl border border-slate-200 flex items-center justify-center gap-2 font-bold text-sm bg-white hover:bg-slate-50 text-slate-700 transition-all">
+                            <i class="fa-regular fa-circle-xmark text-rose-500 text-lg"></i>
+                            <span>Incorrect (0 Marks)</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(gradingCard);
+
+            const previousDecision = manualGrades[q.id];
+            if (previousDecision !== undefined) {
+                if (previousDecision) {
+                    document.getElementById('btn-correct').className = "py-3 px-4 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-900 flex items-center justify-center gap-2 font-black text-sm shadow-sm transition-all";
+                } else {
+                    document.getElementById('btn-incorrect').className = "py-3 px-4 rounded-xl border-2 border-rose-600 bg-rose-50 text-rose-900 flex items-center justify-center gap-2 font-black text-sm shadow-sm transition-all";
+                }
+            }
+        }
+
+        function setManualGrade(qId, isCorrect) {
+            manualGrades[qId] = isCorrect;
+            
+            if (currentGradingIndex < manualGradingQuestions.length - 1) {
+                currentGradingIndex++;
+                renderGradingItem();
+            } else {
+                const finalBtn = document.getElementById('grading-done-btn');
+                finalBtn.disabled = false;
+                finalBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                renderGradingItem(); 
+            }
+        }
+
+        async function submitGradesOnline() {
+            // Compute score statistics
+            let score = 0;
+            let total = quizData.length;
+            
+            let domains = {
+                "Reading Comprehension": { score: 0, total: 0 },
+                "Grammar": { score: 0, total: 0 },
+                "Vocabulary & Spelling": { score: 0, total: 0 },
+                "Sentence Construction & Writing": { score: 0, total: 0 }
+            };
+
+            quizData.forEach(q => {
+                let isCorrect = false;
+                const studAns = studentAnswers[q.id];
+
+                if (q.type === 'mcq' || q.type === 'tf') {
+                    isCorrect = studAns === q.answer;
+                } else if (q.type === 'text') {
+                    if (studAns) {
+                        const sanStud = studAns.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"");
+                        isCorrect = q.exactAnswers.some(ans => {
+                            if (ans === "any") return true;
+                            return sanStud === ans.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"");
+                        });
+                    }
+                } else if (q.type === 'manual') {
+                    isCorrect = manualGrades[q.id] === true;
+                }
+
+                if (isCorrect) score++;
+
+                if (domains[q.domain]) {
+                    domains[q.domain].total++;
+                    if (isCorrect) domains[q.domain].score++;
+                }
+                q.isCorrect = isCorrect;
+            });
+
+            const percentage = Math.round((score / total) * 100);
+
+            let tp = "TP 1";
+            let tpTitle = "Perlu Banyak Usaha";
+            let tpDesc = "Requires serious intervention and remedial exercise. Minimal command of vocabulary and simple phrases.";
+
+            if (percentage >= 80) {
+                tp = "TP 6";
+                tpTitle = "Cemerlang (Excellent)";
+                tpDesc = "Highly expressive. Demonstrates comprehensive mastery over complex grammar structures and detailed texts.";
+            } else if (percentage >= 65) {
+                tp = "TP 5";
+                tpTitle = "Sangat Baik (Very Good)";
+                tpDesc = "Stable linguistic control. Easily reads, spells, and handles guided sentence constructions with minimal support.";
+            } else if (percentage >= 50) {
+                tp = "TP 4";
+                tpTitle = "Baik (Good)";
+                tpDesc = "Satisfactory command of language. Solves basic reading and vocabulary queries reliably.";
+            } else if (percentage >= 40) {
+                tp = "TP 3";
+                tpTitle = "Memuaskan (Satisfactory)";
+                tpDesc = "Able to grasp standard words, but struggles with multi-sentence contexts and correct past tense verb applications.";
+            } else if (percentage >= 20) {
+                tp = "TP 2";
+                tpTitle = "Perlu Usaha (Progressing)";
+                tpDesc = "Developing base vocabulary. Requires systematic support to build proper past tense and syntax skills.";
+            }
+
+            // Sync updated grades database-side
+            if (window.firebaseDB && activeGradingSessionId) {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'y4-eng-quiz-online-db';
+                const colPath = `artifacts/${appId}/public/data/quiz_sessions`;
+                const targetDoc = doc(window.firebaseDB, colPath, activeGradingSessionId);
+                
+                try {
+                    await updateDoc(targetDoc, {
+                        status: 'graded',
+                        score: score,
+                        finalScore: score,
+                        tpLevel: tp,
+                        manualGrades: manualGrades
+                    });
+                    showToast("Scores officially published to live class rankings!", "success");
+                } catch (e) {
+                    console.error("Failed database upload", e);
+                }
+            }
+
+            gradingModal.classList.add('hidden');
+            renderLocalAnalysisReport(score, total, percentage, domains, tp, tpTitle, tpDesc);
+        }
+
+        // Standard self-grading local backup logic
+        function calculateFinalAnalysis() {
+            submitGradesOnline();
+        }
+
+        function renderLocalAnalysisReport(score, total, percentage, domains, tp, tpTitle, tpDesc) {
+            examScreen.classList.add('hidden');
+            analysisScreen.classList.remove('hidden');
+
+            let badgeBg = "bg-rose-600";
+            if (tp === "TP 6") badgeBg = "bg-emerald-600";
+            else if (tp === "TP 5") badgeBg = "bg-teal-600";
+            else if (tp === "TP 4") badgeBg = "bg-blue-600";
+            else if (tp === "TP 3") badgeBg = "bg-amber-600";
+            else if (tp === "TP 2") badgeBg = "bg-orange-600";
+
+            document.getElementById('report-final-score').textContent = `${score}/${total}`;
+            document.getElementById('report-final-percent').textContent = `${percentage}%`;
+            
+            const badge = document.getElementById('tp-badge');
+            badge.textContent = tp;
+            badge.className = `mt-4 px-6 py-4 rounded-2xl font-black text-4xl shadow-inner text-white ${badgeBg}`;
+            document.getElementById('tp-title').textContent = tpTitle;
+            document.getElementById('tp-desc').textContent = tpDesc;
+
+            const timeDiff = new Date() - startTime;
+            const mins = String(Math.floor((timeDiff % 3600000) / 60000)).padStart(2, '0');
+            const secs = String(Math.floor((timeDiff % 60000) / 1000)).padStart(2, '0');
+            document.getElementById('report-time-taken').textContent = `${mins}m ${secs}s`;
+
+            const averageSec = Math.round((timeDiff / 1000) / total);
+            document.getElementById('report-time-average').textContent = `${averageSec} sec / Q`;
+            document.getElementById('report-date').textContent = new Date().toLocaleDateString('en-MY', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+            document.getElementById('report-student-name').textContent = studentName;
+            document.getElementById('report-student-class').textContent = studentClass;
+
+            const ring = document.getElementById('score-ring');
+            const circumference = 2 * Math.PI * 64; 
+            const offset = circumference - (percentage / 100) * circumference;
+            ring.style.strokeDasharray = `${circumference}`;
+            ring.style.strokeDashoffset = offset;
+            
+            if (percentage >= 80) ring.setAttribute('stroke', '#10b981');
+            else if (percentage >= 50) ring.setAttribute('stroke', '#3b82f6');
+            else if (percentage >= 40) ring.setAttribute('stroke', '#f59e0b');
+            else ring.setAttribute('stroke', '#ef4444');
+
+            renderTopicProfile(domains);
+            buildRadarChart(domains);
+            renderDetailedReview('all');
+        }
+
+        function renderTopicProfile(domains) {
+            const container = document.getElementById('topic-performance-bars');
+            container.innerHTML = '';
+
+            Object.keys(domains).forEach(key => {
+                const dom = domains[key];
+                const pct = dom.total > 0 ? Math.round((dom.score / dom.total) * 100) : 0;
+                
+                let colorClass = "bg-rose-500";
+                if (pct >= 80) colorClass = "bg-emerald-500";
+                else if (pct >= 50) colorClass = "bg-blue-500";
+                else if (pct >= 40) colorClass = "bg-amber-500";
+
+                const wrapper = document.createElement('div');
+                wrapper.className = "space-y-1";
+                wrapper.innerHTML = `
+                    <div class="flex justify-between text-xs font-bold text-slate-700">
+                        <span>${key}</span>
+                        <span>${dom.score}/${dom.total} (${pct}%)</span>
+                    </div>
+                    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                        <div class="h-2.5 rounded-full ${colorClass}" style="width: ${pct}%"></div>
+                    </div>
+                `;
+                container.appendChild(wrapper);
+            });
+        }
+
+        function buildRadarChart(domains) {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            const dataValues = Object.keys(domains).map(k => {
+                const dom = domains[k];
+                return dom.total > 0 ? Math.round((dom.score / dom.total) * 100) : 0;
+            });
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Reading Comp.', 'Grammar', 'Vocabulary', 'Writing'],
+                    datasets: [{
+                        label: 'Proficiency Score (%)',
+                        data: dataValues,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        pointBackgroundColor: 'rgb(59, 130, 246)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(59, 130, 246)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { stepSize: 20 }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function filterReview(type) {
+            ['all', 'correct', 'incorrect'].forEach(t => {
+                const btn = document.getElementById(`filter-${t}`);
+                if (t === type) {
+                    btn.className = "px-3 py-1.5 rounded-full font-bold bg-blue-800 text-white shadow-sm";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-full font-bold text-slate-600 hover:bg-slate-100";
+                }
+            });
+
+            renderDetailedReview(type);
+        }
+
+        function renderDetailedReview(filter) {
+            const container = document.getElementById('detailed-review-list');
+            container.innerHTML = '';
+
+            let filteredList = quizData;
+            if (filter === 'correct') {
+                filteredList = quizData.filter(q => q.isCorrect);
+            } else if (filter === 'incorrect') {
+                filteredList = quizData.filter(q => !q.isCorrect);
+            }
+
+            if (filteredList.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 font-medium">No results found matching this filter category.</div>`;
+                return;
+            }
+
+            filteredList.forEach(q => {
+                const card = document.createElement('div');
+                card.className = `border rounded-xl p-5 shadow-sm space-y-3 bg-white ${q.isCorrect ? 'border-emerald-200 bg-emerald-50/10' : 'border-rose-200 bg-rose-50/10'}`;
+
+                const header = `
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                        <span class="font-black text-sm text-slate-900">Question ${q.id}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded font-bold uppercase tracking-wider text-slate-500">${q.domain}</span>
+                            ${q.isCorrect 
+                                ? '<span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-extrabold flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Correct</span>' 
+                                : '<span class="bg-rose-100 text-rose-800 text-xs px-2.5 py-1 rounded-full font-extrabold flex items-center gap-1"><i class="fa-solid fa-circle-xmark"></i> Incorrect</span>'
+                            }
+                        </div>
+                    </div>
+                `;
+                card.innerHTML += header;
+
+                const qBody = document.createElement('div');
+                qBody.className = "space-y-1.5 text-sm";
+                qBody.innerHTML = `
+                    <p class="font-bold text-slate-900">${q.question}</p>
+                `;
+                
+                if (q.context) {
+                    qBody.innerHTML += `<p class="text-xs text-slate-500 italic bg-slate-50 p-2 rounded border border-slate-100 mt-1 whitespace-pre-wrap">${q.context}</p>`;
+                }
+
+                card.appendChild(qBody);
+
+                const ansComp = document.createElement('div');
+                ansComp.className = "grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mt-3 pt-3 border-t border-slate-100";
+                
+                let studentAnsText = "";
+                let correctAnsText = "";
+
+                if (q.type === 'mcq' || q.type === 'tf') {
+                    studentAnsText = studentAnswers[q.id] !== undefined ? `<strong>${String.fromCharCode(65 + studentAnswers[q.id])})</strong> ${q.options[studentAnswers[q.id]]}` : "No Answer Submitted";
+                    correctAnsText = `<strong>${String.fromCharCode(65 + q.answer)})</strong> ${q.options[q.answer]}`;
+                } else if (q.type === 'text') {
+                    studentAnsText = studentAnswers[q.id] || "No Answer Submitted";
+                    correctAnsText = q.exactAnswers.join(" OR ");
+                } else if (q.type === 'manual') {
+                    studentAnsText = studentAnswers[q.id] || "No Answer Submitted";
+                    correctAnsText = q.modelAnswer;
+                }
+
+                ansComp.innerHTML = `
+                    <div class="p-2.5 rounded bg-slate-100">
+                        <span class="block text-[10px] text-slate-400 font-bold uppercase tracking-wide">Your Answer</span>
+                        <span class="font-semibold text-slate-800 mt-0.5 block">${studentAnsText}</span>
+                    </div>
+                    <div class="p-2.5 rounded bg-blue-50/60 border border-blue-100">
+                        <span class="block text-[10px] text-blue-400 font-bold uppercase tracking-wide">Correct Reference</span>
+                        <span class="font-semibold text-blue-900 mt-0.5 block">${correctAnsText}</span>
+                    </div>
+                `;
+                card.appendChild(ansComp);
+
+                if (q.rationale) {
+                    const rat = document.createElement('div');
+                    rat.className = "mt-3 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600";
+                    rat.innerHTML = `
+                        <p class="leading-relaxed"><strong class="text-slate-800 block mb-0.5 uppercase tracking-wide text-[9px]"><i class="fa-solid fa-circle-info"></i> Answering Guide / Analysis</strong> ${q.rationale}</p>
+                    `;
+                    card.appendChild(rat);
+                }
+
+                container.appendChild(card);
+            });
+        }
+
+        function renderCloudLeaderboard() {
+            const tbody = document.getElementById('leaderboard-body');
+            tbody.innerHTML = '';
+
+            // Filter complete and graded submissions (Rule 2: Sort in-memory)
+            const activeEntries = window.quizSessions.filter(s => s.status === 'graded');
+
+            if (activeEntries.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">No graded student submissions found on the classroom network yet. Be the first to finish!</td></tr>`;
+                return;
+            }
+
+            // In-Memory Sorting: 1st by final score descending, 2nd by speed ascending
+            activeEntries.sort((a, b) => {
+                if (b.finalScore !== a.finalScore) {
+                    return b.finalScore - a.finalScore;
+                }
+                return a.timeTakenMs - b.timeTakenMs;
+            });
+
+            activeEntries.forEach((entry, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 border-b";
+
+                const elapsedMins = Math.floor(entry.timeTakenMs / 60000);
+                const elapsedSecs = Math.floor((entry.timeTakenMs % 60000) / 1000);
+                const timeString = `${elapsedMins}m ${elapsedSecs}s`;
+
+                let medal = idx + 1;
+                if (idx === 0) medal = '<i class="fa-solid fa-medal text-yellow-500 text-base"></i>';
+                else if (idx === 1) medal = '<i class="fa-solid fa-medal text-slate-400 text-base"></i>';
+                else if (idx === 2) medal = '<i class="fa-solid fa-medal text-amber-600 text-base"></i>';
+
+                tr.innerHTML = `
+                    <td class="p-3 font-bold">${medal}</td>
+                    <td class="p-3 font-semibold text-slate-900">${entry.studentName}</td>
+                    <td class="p-3 text-slate-500">${entry.studentClass}</td>
+                    <td class="p-3 text-center font-bold text-blue-800">${entry.finalScore} / 50</td>
+                    <td class="p-3 text-center font-bold"><span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">${entry.tpLevel}</span></td>
+                    <td class="p-3 text-center text-xs text-slate-500">${timeString}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">Graded</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderTeacherDesk() {
+            const list = document.getElementById('teacher-desk-list');
+            list.innerHTML = '';
+
+            const pending = window.quizSessions.filter(s => s.status === 'pending_grading');
+
+            if (pending.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-8 text-slate-400">
+                        <i class="fa-solid fa-inbox text-4xl mb-2 text-slate-300 block"></i>
+                        No pending student submissions waiting for evaluations.
+                    </div>
+                `;
+                return;
+            }
+
+            pending.forEach(session => {
+                const elapsedMins = Math.floor(session.timeTakenMs / 60000);
+                const elapsedSecs = Math.floor((session.timeTakenMs % 60000) / 1000);
+
+                const card = document.createElement('div');
+                card.className = "flex justify-between items-center bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl shadow-sm";
+                card.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-indigo-900">${session.studentName}</h4>
+                        <p class="text-xs text-slate-500">Class: <strong>${session.studentClass}</strong> • Time: <strong>${elapsedMins}m ${elapsedSecs}s</strong></p>
+                    </div>
+                    <button onclick="startTeacherEvaluation('${session.id}')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-file-signature"></i>
+                        Grade Paper
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // Allows teachers to grade student essays online
+        function startTeacherEvaluation(sessionId) {
+            const session = window.quizSessions.find(s => s.id === sessionId);
+            if (!session) return;
+
+            studentName = session.studentName;
+            studentClass = session.studentClass;
+            studentAnswers = session.studentAnswers;
+            activeGradingSessionId = session.id;
+
+            initiateGradingWorkflow();
+        }
+    </script>
+</body>
+</html>
